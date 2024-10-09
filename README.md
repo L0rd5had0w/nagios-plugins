@@ -1,5 +1,90 @@
 # Plugins de Nagios
 
+## Plugin de Nagios para Monitoreo de Bloqueos en BD SQL Server
+
+## Descripción
+
+El plugin `check_mssql_lock` es una herramienta diseñada para monitorear bloqueos en bases de datos Microsoft SQL Server (MSSQL). Este plugin permite a los administradores de sistemas detectar y gestionar bloqueos que pueden afectar el rendimiento de la base de datos, proporcionando información crítica sobre el estado de las conexiones y los bloqueos activos.
+
+## Características
+
+- **Monitoreo de Bloqueos**: Verifica el número de bloqueos activos en la base de datos.
+- **Umbrales Configurables**: Permite establecer umbrales de advertencia y crítico para el número de bloqueos.
+- **Salida Formateada**: Genera una salida compatible con Nagios, facilitando la integración en sistemas de monitoreo.
+
+## Requisitos
+
+- **Perl**: Este script requiere Perl 5.10 o superior.
+- **Módulo DBD::ODBC**: Necesario para la conexión a bases de datos MSSQL.
+- **Acceso a la Base de Datos**: Credenciales válidas para conectarse a la base de datos MSSQL.
+
+## Instalación
+
+1. **Instalar Dependencias**:
+   Asegúrate de tener instalado el módulo `DBD::ODBC`:
+   ```bash
+   cpan DBD::ODBC
+
+Tomar en cuenta que hay que instalar el Driver de SQL Server para el ODBC, revisar el siguiente enlace:
+
+[Instalación del controlador ODBC de Microsoft para SQL Server](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver16&tabs=ubuntu18-install%2Cubuntu17-install%2Cubuntu16-install%2Cubuntu16-13-install%2Cubuntu-offline)
+
+Actualizar el Script con la versión de Driver que se tenga instalada.
+
+![image](https://github.com/user-attachments/assets/ab198420-e5fd-47e7-ba5a-cebc216bb517)
+
+
+2. **Clonar el Repositorio**:
+   ```bash
+   git clone https://github.com/tu_usuario/tu_repositorio.git
+   cd tu_repositorio
+
+   Dar Permisos de Ejecución: Asegúrate de que el script tenga permisos de ejecución:
+
+3. **Dar permiso al Script**:
+`chmod +x check_mssql_lock.pl`
+
+4. **Mover Script a la carpeta de Plugins**:
+Mover el Script a la Carpeta de Plugins de Nagios: Mueve el script a la carpeta de plugins de Nagios, generalmente ubicada en /usr/lib/nagios/plugins/:
+`sudo mv check_mssql_lock.pl /usr/lib/nagios/plugins/`
+
+### Uso
+
+El script se puede ejecutar directamente desde la línea de comandos o configurarse como un comando en Nagios.
+`check_mssql_lock.pl -s SERVER_NAME -d DATABASE_NAME -u USERNAME -p PASSWORD [-t umbral]`
+
+Opciones
+-s SERVER_NAME: Nombre del servidor MSSQL.
+-d DATABASE_NAME: Nombre de la base de datos.
+-u USERNAME: Nombre de usuario para la conexión.
+-p PASSWORD: Contraseña para la conexión.
+-t umbral: Número de bloqueos a partir del cual se considera crítico (por defecto: 5).
+-h: Muestra el mensaje de ayuda.
+
+### Integración con Nagios
+Para integrar este script en Nagios, puedes definir un nuevo comando en el archivo de configuración de Nagios (commands.cfg):
+
+`define command {
+    command_name    check_mssql_locks
+    command_line    /usr/lib/nagios/plugins/check_mssql_lock.pl -s $ARG1$ -d $ARG2$ -u $ARG3$ -p $ARG4$ -t $ARG5$
+}
+`
+
+Luego, puedes usar este comando en la definición de un servicio en tu archivo de configuración de servicios:
+
+`define service {
+    use                 generic-service
+    host_name           tu_host
+    service_description Bloqueos MSSQL
+    check_command       check_mssql_locks!SERVER_NAME!DATABASE_NAME!USERNAME!PASSWORD!5
+}
+`
+
+### Salida del Script
+La salida del script está diseñada para ser compatible con Nagios. Se presenta en el siguiente formato:
+
+`[BLOCKED] Total: X | bloqueos=Y;;;;`
+   
 ## Plugin de Nagios para Monitoreo de Memoria en Linux
 
 ### Descripción
