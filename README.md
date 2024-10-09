@@ -6,6 +6,8 @@
 
 Este plugin de Nagios está diseñado para monitorear y reportar el uso de memoria y swap en sistemas operativos Linux. Proporciona información detallada sobre la memoria total, usada y libre, así como el uso de swap, permitiendo a los administradores de sistemas detectar problemas de rendimiento y gestionar mejor los recursos del sistema.
 
+Este Plugin, es basado en el trabajo de Lukasz Golodin, lukasz.gogolin@gmail.com.
+
 ### Características
 
 - **Monitoreo de Memoria**: Mide el uso de la memoria RAM en tiempo real, incluyendo el total, el usado, el libre y el caché.
