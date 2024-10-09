@@ -28,7 +28,6 @@ Este plugin de Nagios está diseñado para monitorear y reportar el uso de memor
    cd tu_repositorio
 
    Dar Permisos de Ejecución: Asegúrate de que el script tenga permisos de ejecución:
-bash
 
 2. **Dar permiso al Script**:
 `chmod +x check_memory.pl`
