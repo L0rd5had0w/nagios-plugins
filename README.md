@@ -2,23 +2,23 @@
 
 ## Plugin de Nagios para Monitoreo de Bloqueos en BD SQL Server
 
-## Descripción
+### Descripción
 
 El plugin `check_mssql_lock` es una herramienta diseñada para monitorear bloqueos en bases de datos Microsoft SQL Server (MSSQL). Este plugin permite a los administradores de sistemas detectar y gestionar bloqueos que pueden afectar el rendimiento de la base de datos, proporcionando información crítica sobre el estado de las conexiones y los bloqueos activos.
 
-## Características
+### Características
 
 - **Monitoreo de Bloqueos**: Verifica el número de bloqueos activos en la base de datos.
 - **Umbrales Configurables**: Permite establecer umbrales de advertencia y crítico para el número de bloqueos.
 - **Salida Formateada**: Genera una salida compatible con Nagios, facilitando la integración en sistemas de monitoreo.
 
-## Requisitos
+### Requisitos
 
 - **Perl**: Este script requiere Perl 5.10 o superior.
 - **Módulo DBD::ODBC**: Necesario para la conexión a bases de datos MSSQL.
 - **Acceso a la Base de Datos**: Credenciales válidas para conectarse a la base de datos MSSQL.
 
-## Instalación
+### Instalación
 
 1. **Instalar Dependencias**:
    Asegúrate de tener instalado el módulo `DBD::ODBC`:
