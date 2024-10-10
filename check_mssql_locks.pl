@@ -35,7 +35,7 @@ my $sql = "
     FROM sys.dm_exec_requests AS r
     JOIN sys.dm_exec_sessions AS s ON r.session_id = s.session_id
     WHERE r.blocking_session_id <> 0
-    AND DATEDIFF(minute, s.last_request_start_time, GETDATE()) >= 2;
+    AND DATEDIFF(minute, s.last_request_start_time, GETDATE()) >= 1;
 ";
 
 my $sth = $dbh->prepare($sql);
