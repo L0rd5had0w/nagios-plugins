@@ -36,8 +36,8 @@ Actualizar el Script con la versión de Driver que se tenga instalada.
 
 2. **Clonar el Repositorio**:
    ```bash
-   git clone https://github.com/tu_usuario/tu_repositorio.git
-   cd tu_repositorio
+   git clone https://github.com/L0rd5had0w/nagios-plugins.git
+   cd nagios-plugins
 
    Dar Permisos de Ejecución: Asegúrate de que el script tenga permisos de ejecución:
 
@@ -111,8 +111,8 @@ Este Plugin, es basado en el trabajo de Lukasz Golodin, lukasz.gogolin@gmail.com
 
 1. **Clonar el Repositorio**:
    ```bash
-   git clone https://github.com/tu_usuario/tu_repositorio.git
-   cd tu_repositorio
+   git clone https://github.com/L0rd5had0w/nagios-plugins.git
+   cd nagios-plugins
 
    Dar Permisos de Ejecución: Asegúrate de que el script tenga permisos de ejecución:
 
@@ -165,3 +165,85 @@ La salida del script está diseñada para ser compatible con Nagios. Se presenta
 
 `[MEMORIA] Total: X GB - Usado: Y GB - Z% [SWAP] Total: A GB - Usado: B GB - C% | MTOTAL=D;;;; MUSED=E;;;; STOTAL=F;;;; SUSED=G;;;;
 Donde X, Y, Z, A, B, C, D, E, F y G representan los valores correspondientes de memoria y swap.`
+
+## Plugin de Nagios para Envio de Notificaciones a Microsoft Teams
+
+### Descripción
+
+El plugin `notify-teams` es una herramienta diseñada para envíar notificaciones a Microsoft Teams utilizando WebHooks. Permite personalizar el asunto y el contenido del mensaje, así como incluir un mensaje largo si es necesario.
+
+Este Plugin, es basado en el trabajo de [Isaac Galvan](https://github.com/isaac-galvan).
+
+### Características
+
+- **Monitoreo de Bloqueos**: Verifica el número de bloqueos activos en la base de datos.
+- **Umbrales Configurables**: Permite establecer umbrales de advertencia y crítico para el número de bloqueos.
+- **Salida Formateada**: Genera una salida compatible con Nagios, facilitando la integración en sistemas de monitoreo.
+
+### Requisitos
+
+- **Perl**: Este script requiere Perl 5.10 o superior.
+- **Módulo JSON**: El módulo JSON se utiliza para codificar y decodificar datos en formato JSON.
+- **Módulo LWP::UserAgent**: Es un módulo que proporciona una interfaz para realizar solicitudes HTTP en Perl.
+- **Módulo Getopt::Long**: El módulo Getopt::Long se utiliza para analizar argumentos de línea de comandos en scripts Perl.
+
+### Instalación
+
+1. **Instalar Dependencias**:
+   Asegúrate de tener instalados los módulos:
+   ```bash
+	sudo cpan JSON
+	sudo cpan LWP::UserAgent
+	sudo cpan Getopt::Long
+
+
+2. **Clonar el Repositorio**:
+   ```bash
+   git clone https://github.com/L0rd5had0w/nagios-plugins.git
+   cd nagios-plugins
+
+   Dar Permisos de Ejecución: Asegúrate de que el script tenga permisos de ejecución:
+
+3. **Dar permiso al Script**:
+`chmod +x notify-teams.pl`
+
+4. **Mover Script a la carpeta de Plugins**:
+Mover el Script a la Carpeta de Plugins de Nagios: Mueve el script a la carpeta de plugins de Nagios, generalmente ubicada en /usr/lib/nagios/plugins/:
+`sudo mv notify-teams.pl /usr/lib/nagios/plugins/`
+
+### Uso
+
+El script se puede ejecutar directamente desde la línea de comandos o configurarse como un comando en Nagios.
+`notify-teams.pl -subject "<asunto>" -output "<salida>" -url "<url>"
+
+Opciones
+- subject: Asunto del mensaje.
+- output: Salida a incluir en el mensaje.
+- url: URL del WebHook de Microsoft Teams.
+- help: Muestra la ayuda sobre el uso del script.
+
+### Integración con Nagios
+Para integrar este script en Nagios, puedes definir un nuevo comando en el archivo de configuración de Nagios (commands.cfg):
+
+`define command {
+    command_name notify_teams
+    command_line /usr/bin/printf "$LONGSERVICEOUTPUT$" | /path/to/script/notify-teams.pl  "$NOTIFICATIONTYPE$: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$" "$SERVICEOUTPUT$" $_CONTACTWEBHOOKURL$
+}
+`
+
+Luego, debes agregar lo siguiente en contactos, recuerda que esto nos servira para la comunicación de notificaciones de Nagios:
+
+`define contact {
+    contact_name    example-team
+    alias           Example Team
+    host_notifications_enabled  1
+    service_notifications_enabled   1
+    host_notification_period	24x7
+    service_notification_period	24x7 
+    host_notification_options	d,u,r,f,s
+    service_notification_options	w,u,c,r,f
+    host_notification_commands	notify_teams
+    service_notification_commands	notify_teams
+    _WEBHOOKURL https://outlook.office.com/webhook/2bfd8a0a-1d45-4ea6-a736-db25a6be5c95@44467e6f-462c-4ea2-823f-7800de5434e3/IncomingWebhook/2863b6ee982c4c51af6e96852289c0c6/ba913a1a-4779-41ca-96af-93ed0869be1b
+}
+`
