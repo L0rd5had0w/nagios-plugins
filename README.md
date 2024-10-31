@@ -39,8 +39,6 @@ Actualizar el Script con la versión de Driver que se tenga instalada.
    git clone https://github.com/L0rd5had0w/nagios-plugins.git
    cd nagios-plugins
 
-   Dar Permisos de Ejecución: Asegúrate de que el script tenga permisos de ejecución:
-
 3. **Dar permiso al Script**:
 `chmod +x check_mssql_lock.pl`
 
@@ -64,21 +62,23 @@ Opciones
 ### Integración con Nagios
 Para integrar este script en Nagios, puedes definir un nuevo comando en el archivo de configuración de Nagios (commands.cfg):
 
-`define command {
+```
+define command {
     command_name    check_mssql_locks
     command_line    /usr/lib/nagios/plugins/check_mssql_lock.pl -s $ARG1$ -d $ARG2$ -u $ARG3$ -p $ARG4$ -t $ARG5$
 }
-`
+```
 
 Luego, puedes usar este comando en la definición de un servicio en tu archivo de configuración de servicios:
 
-`define service {
+```
+define service {
     use                 generic-service
     host_name           tu_host
     service_description Bloqueos MSSQL
     check_command       check_mssql_locks!SERVER_NAME!DATABASE_NAME!USERNAME!PASSWORD!5
 }
-`
+````
 
 ### Salida del Script
 La salida del script está diseñada para ser compatible con Nagios. Se presenta en el siguiente formato:
@@ -114,8 +114,6 @@ Este Plugin, es basado en el trabajo de Lukasz Golodin, lukasz.gogolin@gmail.com
    git clone https://github.com/L0rd5had0w/nagios-plugins.git
    cd nagios-plugins
 
-   Dar Permisos de Ejecución: Asegúrate de que el script tenga permisos de ejecución:
-
 2. **Dar permiso al Script**:
 `chmod +x check_memory.pl`
 
@@ -146,19 +144,23 @@ Este comando configurará los umbrales de advertencia y crítico para el uso de 
 ### Integración con Nagios
 Para integrar este script en Nagios, puedes definir un nuevo comando en el archivo de configuración de Nagios (commands.cfg):
 
-`define command {
+```
+define command {
     command_name    check_memory
     command_line    /usr/lib/nagios/plugins/check_memory.pl -w $ARG1$ -c $ARG2$ -W $ARG3$ -C $ARG4$ -u $ARG5$
-}`
+}
+```
 
 Luego, puedes usar este comando en la definición de un servicio en tu archivo de configuración de servicios:
 
-`define service {
+```
+define service {
     use                 generic-service
     host_name           tu_host
     service_description Memoria y Swap
     check_command       check_memory!80!90!40!60!GB
-}`
+}
+```
 
 ### Salida del Script
 La salida del script está diseñada para ser compatible con Nagios. Se presenta en el siguiente formato:
@@ -196,8 +198,6 @@ Este Plugin, es basado en el trabajo de [Isaac Galvan](https://github.com/isaac-
    git clone https://github.com/L0rd5had0w/nagios-plugins.git
    cd nagios-plugins
 
-   Dar Permisos de Ejecución: Asegúrate de que el script tenga permisos de ejecución:
-
 3. **Dar permiso al Script**:
 `chmod +x notify-teams.pl`
 
@@ -219,15 +219,17 @@ Opciones
 ### Integración con Nagios
 Para integrar este script en Nagios, puedes definir un nuevo comando en el archivo de configuración de Nagios (commands.cfg):
 
-`define command {
+```
+define command {
     command_name notify_teams
     command_line /usr/bin/printf "$LONGSERVICEOUTPUT$" | /path/to/script/notify-teams.pl  "$NOTIFICATIONTYPE$: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$" "$SERVICEOUTPUT$" $_CONTACTWEBHOOKURL$
 }
-`
+```
 
 Luego, debes agregar lo siguiente en contactos, recuerda que esto nos servira para la comunicación de notificaciones de Nagios:
 
-`define contact {
+```
+define contact {
     contact_name    example-team
     alias           Example Team
     host_notifications_enabled  1
@@ -240,4 +242,4 @@ Luego, debes agregar lo siguiente en contactos, recuerda que esto nos servira pa
     service_notification_commands	notify_teams
     _WEBHOOKURL https://outlook.office.com/webhook/2bfd8a0a-1d45-4ea6-a736-db25a6be5c95@44467e6f-462c-4ea2-823f-7800de5434e3/IncomingWebhook/2863b6ee982c4c51af6e96852289c0c6/ba913a1a-4779-41ca-96af-93ed0869be1b
 }
-`
+```
