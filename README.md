@@ -168,6 +168,94 @@ La salida del script está diseñada para ser compatible con Nagios. Se presenta
 `[MEMORIA] Total: X GB - Usado: Y GB - Z% [SWAP] Total: A GB - Usado: B GB - C% | MTOTAL=D;;;; MUSED=E;;;; STOTAL=F;;;; SUSED=G;;;;
 Donde X, Y, Z, A, B, C, D, E, F y G representan los valores correspondientes de memoria y swap.`
 
+## Plugin de Nagios para Monitoreo de CPU en Linux
+
+### Descripción
+
+Este plugin de Nagios está diseñado para monitorear y reportar el uso del CPU en sistemas operativos Linux. Proporciona información detallada sobre el porcentaje total de CPU, el porcentaje en uso y el porcentaje disponible, permitiendo a los administradores de sistemas detectar problemas de rendimiento y gestionar mejor los recursos del sistema.
+
+### Características
+
+- **Monitoreo de CPU**: Mide el uso del CPU en tiempo real, incluyendo el porcentaje total, el porcentaje en uso y el porcentaje disponible.
+- **Umbrales Configurables**: Permite establecer umbrales de advertencia y críticos para el uso del CPU, enviando alertas a Nagios si se superan.
+- **Salida Formateada**: Genera una salida clara y estructurada que puede ser fácilmente interpretada por Nagios.
+
+### Requisitos
+
+- **Perl**: Este script requiere Perl 5.10 o superior.
+- **Sistema Operativo**: Debe ejecutarse en un sistema Linux con acceso a `/proc/stat`.
+- **Nagios**: Debe estar configurado para ejecutar scripts de plugins.
+
+### Instalación
+
+1. **Clonar el Repositorio**:
+   ```bash
+   git clone https://github.com/L0rd5had0w/nagios-plugins.git
+   cd nagios-plugins
+   ```
+
+2. **Dar permiso al Script**:
+   ```bash
+   chmod +x check_cpu.pl
+   ```
+
+3. **Mover Script a la carpeta de Plugins**:
+   Mover el Script a la Carpeta de Plugins de Nagios, generalmente ubicada en `/usr/lib/nagios/plugins/`:
+   ```bash
+   sudo mv check_cpu.pl /usr/lib/nagios/plugins/
+   ```
+
+### Uso
+
+El script se puede ejecutar directamente desde la línea de comandos o configurarse como un comando en Nagios.
+```bash
+check_cpu.pl -w {advertencia} -c {crítico}
+```
+
+#### Opciones
+- `-w {advertencia}`: Establecer el valor de advertencia para el uso de CPU (por defecto: 80%).
+- `-c {crítico}`: Establecer el valor crítico para el uso de CPU (por defecto: 90%).
+- `-h`: Muestra el mensaje de ayuda.
+
+### Ejemplo de Uso
+Para ejecutar el script y verificar el uso de CPU, puedes usar el siguiente comando:
+
+```bash
+/usr/lib/nagios/plugins/check_cpu.pl -w 80 -c 90
+```
+
+Este comando configurará los umbrales de advertencia y crítico para el uso de CPU.
+
+### Integración con Nagios
+Para integrar este script en Nagios, puedes definir un nuevo comando en el archivo de configuración de Nagios (`commands.cfg`):
+
+```
+define command {
+    command_name    check_cpu
+    command_line    /usr/lib/nagios/plugins/check_cpu.pl -w $ARG1$ -c $ARG2$
+}
+```
+
+Luego, puedes usar este comando en la definición de un servicio en tu archivo de configuración de servicios:
+
+```
+define service {
+    use                 generic-service
+    host_name           tu_host
+    service_description Uso de CPU
+    check_command       check_cpu!80!90
+}
+```
+
+### Salida del Script
+La salida del script está diseñada para ser compatible con Nagios. Se presenta en el siguiente formato:
+
+```
+Uso de CPU: X% en uso, Y% disponible
+```
+
+Donde `X` representa el porcentaje de CPU en uso y `Y` representa el porcentaje de CPU disponible. Esta salida permite a Nagios interpretar fácilmente el estado del CPU y generar alertas según los umbrales configurados.
+
 ## Plugin de Nagios para Envio de Notificaciones a Microsoft Teams
 
 ### Descripción
