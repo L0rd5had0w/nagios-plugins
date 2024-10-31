@@ -186,22 +186,31 @@ Este Plugin, es basado en el trabajo de [Isaac Galvan](https://github.com/isaac-
 ### Instalación
 
 1. **Instalar Dependencias**:
+   Asegúrate de tener instalados las dependencias:
+   ```bash
+	sudo apt-get install perl-openssl-defaults
+	sudo apt-get install libssl-dev
+	```	
+   
    Asegúrate de tener instalados los módulos:
    ```bash
 	sudo cpan JSON
 	sudo cpan LWP::UserAgent
 	sudo cpan Getopt::Long
+    sudo cpan install Net::SSLeay
+	sudo cpan install IO::Socket::SSL
+	sudo cpan install LWP::Protocol::https
 
 
-2. **Clonar el Repositorio**:
+3. **Clonar el Repositorio**:
    ```bash
    git clone https://github.com/L0rd5had0w/nagios-plugins.git
    cd nagios-plugins
 
-3. **Dar permiso al Script**:
+4. **Dar permiso al Script**:
 `chmod +x notify-teams.pl`
 
-4. **Mover Script a la carpeta de Plugins**:
+5. **Mover Script a la carpeta de Plugins**:
 Mover el Script a la Carpeta de Plugins de Nagios: Mueve el script a la carpeta de plugins de Nagios, generalmente ubicada en /usr/lib/nagios/plugins/:
 `sudo mv notify-teams.pl /usr/lib/nagios/plugins/`
 
