@@ -174,12 +174,6 @@ El plugin `notify-teams` es una herramienta diseñada para envíar notificacione
 
 Este Plugin, es basado en el trabajo de [Isaac Galvan](https://github.com/isaac-galvan).
 
-### Características
-
-- **Monitoreo de Bloqueos**: Verifica el número de bloqueos activos en la base de datos.
-- **Umbrales Configurables**: Permite establecer umbrales de advertencia y crítico para el número de bloqueos.
-- **Salida Formateada**: Genera una salida compatible con Nagios, facilitando la integración en sistemas de monitoreo.
-
 ### Requisitos
 
 - **Perl**: Este script requiere Perl 5.10 o superior.
